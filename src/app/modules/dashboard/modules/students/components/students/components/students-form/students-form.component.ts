@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Student } from '../../../../models';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+export interface StudentFormData {
+  student: Student | null;
+}
+
 @Component({
   selector: 'app-students-form',
   standalone: false,
@@ -15,24 +19,25 @@ export class StudentsFormComponent {
   student: Student | null = null;
 
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<StudentsFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: StudentFormData) {
     this.studentForm = this.fb.group({
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      age: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s\-]{7,15}$/)]],
+      age: ['', [Validators.required, Validators.min(3), Validators.max(105), Validators.pattern(/^\d+$/)]],
     });
+
+    if (this.data?.student) {
+      this.studentForm.patchValue(this.data.student);
+    }
   }
 
   ngOnInit() {
-    this.student = history.state.students || {};
-    console.log('Data:', this.student);
   }
 
   onSubmit() {
     if (this.studentForm.valid) {
-      console.log(this.studentForm.value);
       const newStudent: Student = this.studentForm.value;
       this.dialogRef.close(newStudent);
     } else {

@@ -7,26 +7,29 @@ import { StudentsTableComponent } from './components/students-table/students-tab
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { StudentsFormComponent } from './components/students/components/students-form/students-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatButtonModule } from '@angular/material/button';
+import { StudentFullnamePipe } from './pipes/student-fullname.pipe';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
     StudentsComponent,
     StudentsTableComponent,
-    StudentsFormComponent
+    StudentsFormComponent,
+    StudentFullnamePipe,
+    HighlightDirective
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     StudentsRoutingModule,
     MatTableModule, MatFormFieldModule,
-    MatInputModule, MatButton,
-    MatIcon,
+    MatInputModule,
+    MatIconModule, MatButtonModule,
     MatDialogModule
   ],
   exports: [

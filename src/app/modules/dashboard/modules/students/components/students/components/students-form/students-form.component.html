@@ -1,6 +1,6 @@
 <mat-dialog-content>
   <form [formGroup]="studentForm" class="mx-auto" (ngSubmit)="onSubmit()" style="max-width: 400px;">
-    <h2 mat-dialog-title class="text-center">{{student ? 'Agregar' : 'Editar' }} Estudiante</h2>
+    <h1 appHighlight mat-dialog-title class="text-center">{{student ? 'Agregar' : 'Editar' }} Estudiante</h1>
     <div class="w-300">
       <div class="col-12 mb-3">
         <mat-form-field appearance="fill" class="w-100">
