@@ -1,0 +1,7 @@
+<div class="row">
+  <h1>Estudiantes</h1>
+  <div class="col-12 mb-3 d-flex justify-content-end">
+    <button mat-flat-button (click)="onStudentNew()">Agregar Estudiante</button>
+  </div>
+</div>
+<app-students-table [dataSource]="students" (deleteStudent)="onDeleteStudent($event)"></app-students-table>

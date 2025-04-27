@@ -1,0 +1,41 @@
+<mat-dialog-content>
+  <form [formGroup]="studentForm" class="mx-auto" (ngSubmit)="onSubmit()" style="max-width: 400px;">
+    <h2 mat-dialog-title class="text-center">{{student ? 'Agregar' : 'Editar' }} Estudiante</h2>
+    <div class="w-300">
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Nombre" name="name" formControlName="name" required>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Apellido</mat-label>
+          <input matInput placeholder="Apellido" name="lastName" formControlName="lastName" required>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Edad</mat-label>
+          <input matInput placeholder="Edad" name="age" formControlName="age" required>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" name="email" formControlName="email" required>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Teléfono</mat-label>
+          <input matInput placeholder="Teléfono" name="phone" formControlName="phone" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-button (click)="onClose()">Cancelar</button>
+      <button mat-button type="submit" [disabled]="studentForm.invalid">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
