@@ -3,6 +3,7 @@ import { Student } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentsFormComponent } from './components/students/components/students-form/students-form.component';
 import { HttpClient } from '@angular/common/http';
+import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
 
 @Component({
   selector: 'app-students',
@@ -10,12 +11,12 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
 })
-export class StudentsComponent implements OnInit{
+export class StudentsComponent implements OnInit {
   students: Student[] = [];
 
   readonly dialog = inject(MatDialog);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.http.get<Student[]>('data/students.json').subscribe(data => {
@@ -54,16 +55,26 @@ export class StudentsComponent implements OnInit{
           if (student.id === id) {
             return { ...student, ...newStudent }; // Actualiza el estudiante existente
           }
-          return student;});
+          return student;
+        });
       }
     }
 
   }
 
   onDeleteStudent(id: number) {
-    if (confirm('¿Estás seguro de que deseas eliminar este estudiante?')) {
-      console.log(`Eliminando estudiante con ID: ${id}`);
-      this.students = this.students.filter(student => student.id !== id);
-    }
+    const dialogRef = this.dialog.open(StudentsDeleteComponent, {
+      width: '250px',
+      enterAnimationDuration: '0ms',
+      exitAnimationDuration: '0ms',
+      autoFocus: false, // Deshabilita el enfoque automatico en el dialog
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log(`Eliminando estudiante con ID: ${id}`);
+        this.students = this.students.filter((student) => student.id !== id);
+      }
+    });
   }
 }

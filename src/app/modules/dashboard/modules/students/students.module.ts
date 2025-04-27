@@ -14,12 +14,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { StudentFullnamePipe } from './pipes/student-fullname.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
+import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
 
 @NgModule({
   declarations: [
     StudentsComponent,
     StudentsTableComponent,
     StudentsFormComponent,
+    StudentsDeleteComponent,
     StudentFullnamePipe,
     HighlightDirective
   ],
