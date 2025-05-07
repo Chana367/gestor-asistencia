@@ -4,5 +4,12 @@
     <button mat-flat-button (click)="onSaveStudent()">Agregar Estudiante</button>
   </div>
 </div>
-<app-students-table [dataSource]="students" (editStudent)="onSaveStudent($event)"
+
+<ng-container *ngIf="isLoading; else notLoading">
+  <p>Cargando, por favor espere...</p>
+</ng-container>
+
+<ng-template #notLoading>
+  <app-students-table [dataSource]="students" (editStudent)="onSaveStudent($event)"
   (deleteStudent)="onDeleteStudent($event)"></app-students-table>
+</ng-template>

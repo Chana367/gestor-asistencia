@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { StudentFullnamePipe } from './pipes/student-fullname.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
+import { StudentsService } from './services/students.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,5 @@ import { StudentsDeleteComponent } from './components/students-delete/students-d
   exports: [
     StudentsComponent
   ]
-
 })
 export class StudentsModule { }

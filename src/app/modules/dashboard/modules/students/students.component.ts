@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Student } from './models';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentsFormComponent } from './components/students/components/students-form/students-form.component';
-import { HttpClient } from '@angular/common/http';
 import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
+import { StudentsService } from './services/students.service';
 
 @Component({
   selector: 'app-students',
@@ -11,19 +11,36 @@ import { StudentsDeleteComponent } from './components/students-delete/students-d
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'
 })
-export class StudentsComponent implements OnInit {
+export class StudentsComponent {
   students: Student[] = [];
-
+  isLoading: boolean = true; // Variable para controlar el estado de carga
   readonly dialog = inject(MatDialog);
 
-  constructor(private http: HttpClient) { }
+  constructor(private studentService: StudentsService) { 
+    // this.loadStudents(); // Carga los estudiantes al iniciar el componente
+    this.loadStudentsObservable(); // Carga los estudiantes usando un observable
+  }
 
-  ngOnInit(): void {
-    this.http.get<Student[]>('data/students.json').subscribe(data => {
-      this.students = data;
-    }, (error) => {
-      console.error('Error al cargar los datos de estudiantes:', error);
-      this.students = []; // Manejo de error: inicializa la lista de estudiantes vacía
+  loadStudents(): void {
+    this.studentService.getStudents().then((students) => {
+      this.students = students;
+      console.log('Estudiantes cargados:', this.students);
+    }).catch((error) => {
+      console.error('Error al cargar los estudiantes:', error);
+    }).finally(() => this.isLoading = false); // Cambia el estado de carga a falso una vez que se cargan los estudiantes
+  }
+
+  loadStudentsObservable() {
+    this.studentService.getStudents$().subscribe({
+      next: (students) => {
+        this.students = students;
+        console.log('Estudiantes cargados:', this.students);
+      },
+      error: (error: any) => console.error('Error al cargar los estudiantes:', error),
+      complete: () => {
+        this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los estudiantes
+        console.log('Carga de estudiantes completada');
+      }
     });
   }
 
