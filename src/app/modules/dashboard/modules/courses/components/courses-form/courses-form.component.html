@@ -1,0 +1,23 @@
+<mat-dialog-content>
+  <form [formGroup]="courseForm" class="mx-auto" (ngSubmit)="onSubmit()" style="max-width: 400px;">
+    <h1 appHighlight mat-dialog-title class="text-center">{{course ? 'Agregar' : 'Editar' }} Curso</h1>
+    <div class="w-300">
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Nombre del curso" name="name" formControlName="name" required>
+        </mat-form-field>
+      </div>
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Horas</mat-label>
+          <input matInput type="number" placeholder="Horas del curso" name="hours" formControlName="hours" required>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-button (click)="onClose()">Cancelar</button>
+      <button mat-button type="submit" [disabled]="courseForm.invalid">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

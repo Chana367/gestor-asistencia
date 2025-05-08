@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Inject, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Student } from '../../../../models';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Student } from '../../models';
 
 export interface StudentFormData {
   student: Student | null;
@@ -31,9 +31,6 @@ export class StudentsFormComponent {
     if (this.data?.student) {
       this.studentForm.patchValue(this.data.student);
     }
-  }
-
-  ngOnInit() {
   }
 
   onSubmit() {

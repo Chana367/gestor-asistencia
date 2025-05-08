@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { Student } from './models';
 import { MatDialog } from '@angular/material/dialog';
-import { StudentsFormComponent } from './components/students/components/students-form/students-form.component';
 import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
 import { StudentsService } from './services/students.service';
+import { StudentsFormComponent } from './components/students-form/students-form.component';
 
 @Component({
   selector: 'app-students',
