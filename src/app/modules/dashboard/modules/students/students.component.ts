@@ -17,20 +17,10 @@ export class StudentsComponent {
   readonly dialog = inject(MatDialog);
 
   constructor(private studentService: StudentsService) {
-    // this.loadStudents(); // Carga los estudiantes al iniciar el componente
-    this.loadStudentsObservable(); // Carga los estudiantes usando un observable
+    this.loadStudents(); // Carga los estudiantes usando un observable
   }
 
-  loadStudents(): void {
-    this.studentService.getStudents().then((students) => {
-      this.students = students;
-      console.log('Estudiantes cargados:', this.students);
-    }).catch((error) => {
-      console.error('Error al cargar los estudiantes:', error);
-    }).finally(() => this.isLoading = false); // Cambia el estado de carga a falso una vez que se cargan los estudiantes
-  }
-
-  loadStudentsObservable() {
+  loadStudents() {
     this.studentService.getStudents$().subscribe({
       next: (students) => {
         this.students = students;
@@ -45,8 +35,7 @@ export class StudentsComponent {
   }
 
   onSaveStudent(id?: number): void {
-    const student = id ? this.students.find(student => student.id === id) : null;
-
+    const student = id ? this.students.find(student => student.id === id) : null; // Busca el estudiante por ID si se proporciona uno
     const dialogRef = this.dialog.open(StudentsFormComponent, {
       width: '60vw',
       height: 'auto',
@@ -56,27 +45,9 @@ export class StudentsComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.save(result, id); // Guarda el nuevo estudiante o los cambios realizados
+      this.studentService.postStudent(result, id); // Guarda el nuevo estudiante o los cambios realizados
+      this.loadStudents(); // Recarga la lista de estudiantes
     });
-  }
-
-  save(newStudent: Student, id?: number): void {
-    if (newStudent) {
-      if (!id) {
-        // Agregar el nuevo estudiante a la lista de estudiantes
-        newStudent.id = this.students[this.students.length - 1].id + 1; // Asignar un ID unico
-        this.students = [...this.students, newStudent]
-        console.log('Nuevo estudiante agregado:', newStudent);
-      } else {
-        this.students = this.students.map(student => {
-          if (student.id === id) {
-            return { ...student, ...newStudent }; // Actualiza el estudiante existente
-          }
-          return student;
-        });
-      }
-    }
-
   }
 
   onDeleteStudent(id: number) {
@@ -89,8 +60,8 @@ export class StudentsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(`Eliminando estudiante con ID: ${id}`);
-        this.students = this.students.filter((student) => student.id !== id);
+        this.studentService.deleteStudent(id); // Elimina el estudiante si se confirma
+        this.loadStudents(); // Recarga la lista de estudiantes
       }
     });
   }

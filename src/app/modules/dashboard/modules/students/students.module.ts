@@ -10,6 +10,7 @@ import { StudentFullnamePipe } from './pipes/student-fullname.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
 import { SharedModule } from '../../../../shared/shared.module';
+import { StudentDetailComponent } from './pages/student-detail/student-detail.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SharedModule } from '../../../../shared/shared.module';
     StudentsFormComponent,
     StudentsDeleteComponent,
     StudentFullnamePipe,
-    HighlightDirective
+    HighlightDirective,
+    StudentDetailComponent
   ],
   imports: [
     CommonModule,

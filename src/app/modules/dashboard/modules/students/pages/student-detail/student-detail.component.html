@@ -1,0 +1,21 @@
+<div *ngIf="!(student$ | async); else studentFound">
+  <p>Estudiante no encontrado...</p>
+</div>
+<ng-template #studentFound>
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>{{ (student$ | async)?.name }} {{ (student$ | async)?.lastName }}</mat-card-title>
+        <img mat-card-md-image src="https://imgs.search.brave.com/QikUBpY57bDL1fWqD4-nIgcfwzKpFiOJtpqr0gkDDL8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNC8w/NC8wMi8xMC8yNS9t/YW4tMzAzNzkyXzY0/MC5wbmc">
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Edad:</strong> {{ (student$ | async)?.age }}</p>
+      <p><strong>Correo:</strong> {{ (student$ | async)?.email }}</p>
+      <p><strong>Teléfono:</strong> {{ (student$ | async)?.phone }}</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
+
+
+
