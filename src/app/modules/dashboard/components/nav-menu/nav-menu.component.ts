@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface Section {
   name: string;
   icon: string;
+  link: string;
 }
 
 @Component({
@@ -16,19 +18,26 @@ export class NavMenuComponent {
     {
       name: 'Inicio',
       icon: 'home',
+      link: '/dashboard'
     },
     {
       name: 'Alumnos',
       icon: 'people',
+      link: '/dashboard/students'
     },
     {
       name: 'Cursos',
       icon: 'book',
-    },
-    {
-      name: 'Cerrar sesión',
-      icon: 'logout',
+      link: '/dashboard/courses'
     }
   ];
+
+  constructor(private router: Router) {}
+  logout() {
+    console.log('Logout clicked');
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.router.navigate(['/auth/login']);
+  }
 
 }

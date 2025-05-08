@@ -16,7 +16,7 @@ export class StudentsComponent {
   isLoading: boolean = true; // Variable para controlar el estado de carga
   readonly dialog = inject(MatDialog);
 
-  constructor(private studentService: StudentsService) { 
+  constructor(private studentService: StudentsService) {
     // this.loadStudents(); // Carga los estudiantes al iniciar el componente
     this.loadStudentsObservable(); // Carga los estudiantes usando un observable
   }

@@ -4,28 +4,22 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
-import { MatListModule } from '@angular/material/list';
 import { StudentsModule } from './modules/students/students.module';
+import { SharedModule } from '../../shared/shared.module';
+import { HomeDashboardComponent } from './modules/home-dashboard/home-dashboard.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    NavMenuComponent
+    NavMenuComponent,
+    HomeDashboardComponent
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    MatSidenavModule,
     StudentsModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatListModule
+    SharedModule
   ],
   exports: [DashboardComponent]
 })

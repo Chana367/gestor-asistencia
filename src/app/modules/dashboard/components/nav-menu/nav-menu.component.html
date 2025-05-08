@@ -1,8 +1,12 @@
 <mat-list>
   @for (item of items; track item) {
-    <mat-list-item>
+    <mat-list-item routerLink="{{item.link}}">
       <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
       <div matListItemTitle>{{item.name}}</div>
     </mat-list-item>
   }
+  <mat-list-item routerLink="/logout" (click)="logout()">
+    <mat-icon matListItemIcon>logout</mat-icon>
+    <div matListItemTitle>Cerrar sesión</div>
+  </mat-list-item>
 </mat-list>
