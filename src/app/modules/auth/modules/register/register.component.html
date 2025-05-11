@@ -1,23 +1,33 @@
-<form>
-  <div class="register-container">
-    <h1>Register</h1>
-    <div class="form-group">
-      <mat-form-field appearance="fill">
+<form class="d-flex justify-content-center align-items-center vh-100">
+  <div class="register-container p-4 border rounded shadow-sm" style="max-width: 400px; width: 100%;">
+    <h1 class="text-center mb-4">Registro</h1>
+
+    <div class="form-group mb-3">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Username</mat-label>
         <input matInput type="text" [(ngModel)]="username" name="username" required />
       </mat-form-field>
     </div>
 
-    <div class="form-group">
-      <mat-form-field appearance="fill">
+    <div class="form-group mb-3">
+      <mat-form-field appearance="fill" class="w-100">
         <mat-label>Password</mat-label>
         <input matInput type="password" [(ngModel)]="password" name="password" required />
       </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" type="submit" (click)="onRegister()">Register</button>
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-    <div class="login-link">
-      <p>Already have an account? <a routerLink="/auth/login">Login here</a></p>
+
+    <div class="d-grid gap-2">
+      <button mat-raised-button color="primary" type="button" (click)="onRegister()">Register</button>
+    </div>
+
+    <div *ngIf="errorMessage" class="text-danger text-center mt-3">
+      {{ errorMessage }}
+    </div>
+
+    <div class="text-center mt-3">
+      <p class="mb-0">¿Ya tienes una cuenta?
+        <a routerLink="/auth/login">Ingresa aquí</a>
+      </p>
     </div>
   </div>
 </form>

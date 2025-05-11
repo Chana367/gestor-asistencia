@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard', // Redirige a la ruta de dashboard si no se encuentra la ruta
+    redirectTo: 'auth', // Redirige a la ruta de autt si no se encuentra la ruta
   }
 ];
 
