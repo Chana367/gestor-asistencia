@@ -1,0 +1,45 @@
+<mat-dialog-content>
+  <form [formGroup]="inscriptionForm" class="mx-auto" (ngSubmit)="onSubmit()" style="max-width: 400px;">
+    <h1 appHighlight mat-dialog-title class="text-center">{{inscription ? 'Editar' : 'Agregar' }} Inscripción</h1>
+    <div class="w-300">
+      <!-- Selector de Estudiantes -->
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Estudiante</mat-label>
+          <mat-select formControlName="id_student" required>
+            <mat-option *ngFor="let student of students" [value]="student.id">
+              {{ student.name }} {{ student.lastName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Selector de Cursos -->
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Curso</mat-label>
+          <mat-select formControlName="id_course" required>
+            <mat-option *ngFor="let course of courses" [value]="course.id">
+              {{ course.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Fecha de Inscripción -->
+      <div class="col-12 mb-3">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Fecha de Inscripción</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date_inscription" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-button (click)="onClose()">Cancelar</button>
+      <button mat-button type="submit" [disabled]="inscriptionForm.invalid">Guardar</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

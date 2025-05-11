@@ -1,0 +1,41 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Id Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Student Name Column -->
+  <ng-container matColumnDef="student-name">
+    <th mat-header-cell *matHeaderCellDef> Estudiante </th>
+    <td mat-cell *matCellDef="let element"> {{getStudentName(element.id_student)}} </td>
+  </ng-container>
+
+  <!-- Course Name Column -->
+  <ng-container matColumnDef="course-name">
+    <th mat-header-cell *matHeaderCellDef> Curso </th>
+    <td mat-cell *matCellDef="let element"> {{getCourseName(element.id_course)}} </td>
+  </ng-container>
+
+  <!-- Date of Inscription Column -->
+  <ng-container matColumnDef="date-inscription">
+    <th mat-header-cell *matHeaderCellDef> Fecha de Inscripción </th>
+    <td mat-cell *matCellDef="let element"> {{element.date_inscription | date:'dd/MM/yyyy'}} </td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let element">
+      <button class="btn btn-primary btn-sm me-2" (click)="editInscription.emit(element.id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button class="btn btn-danger btn-sm" (click)="deleteInscription.emit(element.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

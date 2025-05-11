@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +11,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -24,11 +27,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatIconModule, MatInputModule,
-    MatTableModule, MatFormFieldModule,
+    MatTableModule, MatSelectModule,
     MatDialogModule, MatInputModule,
     MatIconModule, MatButtonModule,
     MatCardModule, MatToolbarModule,
-    MatListModule, MatSidenavModule
+    MatListModule, MatSidenavModule,
+    MatOptionModule, MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class SharedModule { }

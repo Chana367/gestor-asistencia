@@ -29,6 +29,11 @@ export class NavMenuComponent {
       name: 'Cursos',
       icon: 'book',
       link: '/dashboard/courses'
+    },
+    {
+      name: 'Inscripciones',
+      icon: 'school',
+      link: '/dashboard/inscriptions'
     }
   ];
 
