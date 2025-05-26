@@ -81,6 +81,13 @@
       "password": "123456",
       "role": "user",
       "token": "a1mn0b2-3c4e-4d5a-8b6c-7e8f9a0b1c2d"
+    },
+    {
+      "username": "Chanita2",
+      "password": "Chanita",
+      "email": "paredesfrancisco031@gmail.com",
+      "role": "admin",
+      "id": "3f69"
     }
   ],
   "inscriptions": [

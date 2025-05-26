@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
+import { adminGuard } from '../../core/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
       {
         path: 'inscriptions',
         loadChildren: () => import('./modules/inscriptions/inscriptions.module').then(m => m.InscriptionsModule),
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule),
+        canActivate: [adminGuard],
       }
     ]
   }

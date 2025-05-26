@@ -25,7 +25,7 @@ export class LoginComponent {
       this.errorMessage = 'Por favor, complete todos los campos';
     } else {
       const { username, password } = this.loginForm.value;
-      const user = this.authService.login(username, password);
+      this.authService.login(username, password);
     }
   }
 }

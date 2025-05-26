@@ -10,6 +10,7 @@
         <button *ngIf="user.role == 'admin'" mat-raised-button color="primary" routerLink="students">Estudiantes</button>
         <button mat-raised-button color="accent" routerLink="courses">Cursos</button>
         <button mat-raised-button color="accent" routerLink="inscriptions">Inscripciones</button>
+        <button *ngIf="user.role == 'admin'" mat-raised-button color="accent" routerLink="users">Usuarios</button>
       </div>
     </mat-card-content>
   </mat-card>

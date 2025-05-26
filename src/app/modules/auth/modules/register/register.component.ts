@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterReadyComponent } from '../../components/register-ready/register-ready.component';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -14,31 +15,26 @@ export class RegisterComponent {
   errorMessage: string = '';
   readonly dialog = inject(MatDialog);
 
-  constructor() {
-    this.storage = window.localStorage;
-  }
+  constructor(private authService: AuthService) { }
 
-  private storage: Storage;
 
   onRegister() {
     if (this.username && this.password) {
-      // Obtener la lista de usuarios del almacenamiento local
-      const users = JSON.parse(this.storage.getItem('users') || '[]');
-      // Verificar si el usuario ya existe
-      const userExists = users.some((user: { username: string }) => user.username === this.username);
-      if (userExists) {
-        this.errorMessage = 'El usuario ya existe';
-      } else {
-        // Agregar el nuevo usuario al array
-        users.push({ username: this.username, password: this.password });
-        // Guardar el array actualizado en el almacenamiento local
-        this.storage.setItem('users', JSON.stringify(users));
-        // Registro exitoso
-        console.log('Registro exitoso');
-        this.registerSuccess();
-      }
+      this.authService.register(this.username, this.password)
+        .pipe()
+        .subscribe({
+          next: (result) => {
+            if (result.success) {
+              this.registerSuccess();
+            } else {
+              this.errorMessage = result.message;
+            }
+          },
+          error: (err) => {
+            this.errorMessage = 'Ocurrió un error durante el registro';
+          }
+        });
     } else {
-      // Simulación de error de registro
       this.errorMessage = 'Por favor, completa todos los campos';
     }
   }
