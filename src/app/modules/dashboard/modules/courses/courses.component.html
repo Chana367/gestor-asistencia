@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-12 mb-3 d-flex justify-content-between align-items-center">
     <h1 appHighlight>Cursos</h1>
-    <button mat-flat-button (click)="onSaveCourse()">Agregar Curso</button>
+    <div *ngIf="authUser$ | async; let user">
+      <button *ngIf="user.role == 'admin'" mat-flat-button (click)="onSaveCourse()">Agregar Curso</button>
+    </div>
   </div>
 </div>
 
@@ -11,5 +13,5 @@
 
 <ng-template #notLoading>
   <app-courses-table [dataSource]="courses" (editCourse)="onSaveCourse($event)"
-  (deleteCourse)="onDeleteCourse($event)"></app-courses-table>
+    (deleteCourse)="onDeleteCourse($event)"></app-courses-table>
 </ng-template>

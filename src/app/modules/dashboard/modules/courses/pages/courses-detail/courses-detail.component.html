@@ -1,0 +1,20 @@
+<div *ngIf="!(course$ | async); else courseFound">
+  <p>Curso no encontrado...</p>
+</div>
+<ng-template #courseFound>
+  <mat-card class="example-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>{{ (course$ | async)?.name }}</mat-card-title>
+        <img mat-card-md-image src="https://img.freepik.com/vector-gratis/concepto-educacion-online_52683-9211.jpg?semt=ais_hybrid&w=740">
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>ID:</strong> {{ (course$ | async)?.id }}</p>
+      <p><strong>Horas:</strong> {{ (course$ | async)?.hours }}</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
+
+
+

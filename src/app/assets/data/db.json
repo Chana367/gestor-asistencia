@@ -1,0 +1,22 @@
+{
+  "students": [],
+  "courses": [],
+  "users": [
+    {
+      "id": 1,
+      "username": "John",
+      "email": "fake@mail.com",
+      "password": "123456",
+      "role": "admin",
+      "token": "da2f0b2-3c4e-4d5a-8b6c-7e8f9a0b1c2d"
+    },
+    {
+      "id": 2,
+      "username": "Jane",
+      "email": "fake2@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "token": "a1mn0b2-3c4e-4d5a-8b6c-7e8f9a0b1c2d"
+    }
+  ]
+}

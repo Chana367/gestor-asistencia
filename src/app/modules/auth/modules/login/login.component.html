@@ -1,18 +1,18 @@
-<form class="d-flex justify-content-center align-items-center vh-100">
+<form class="d-flex justify-content-center align-items-center vh-100" [formGroup]="loginForm">
   <div class="login-container p-4 border rounded shadow-sm" style="max-width: 400px; width: 100%;">
     <h1 class="text-center mb-4">Login</h1>
 
     <div class="form-group mb-3">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Username</mat-label>
-        <input matInput type="text" [(ngModel)]="username" name="username" required />
+        <input matInput type="text" formControlName="username" name="username" required />
       </mat-form-field>
     </div>
 
     <div class="form-group mb-3">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Password</mat-label>
-        <input matInput type="password" [(ngModel)]="password" name="password" required />
+        <input matInput type="password" formControlName="password" name="password" required />
       </mat-form-field>
     </div>
 

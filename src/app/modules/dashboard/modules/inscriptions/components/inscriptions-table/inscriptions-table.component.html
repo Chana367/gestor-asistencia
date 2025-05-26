@@ -24,10 +24,10 @@
   </ng-container>
 
   <!-- Actions Column -->
-  <ng-container matColumnDef="actions">
+  <ng-container matColumnDef="actions" *ngIf="authUser$ | async; let user ">
     <th mat-header-cell *matHeaderCellDef> Acciones </th>
     <td mat-cell *matCellDef="let element">
-      <button class="btn btn-primary btn-sm me-2" (click)="editInscription.emit(element.id)">
+      <button *ngIf="user.role == 'admin'" class="btn btn-primary btn-sm me-2" (click)="editInscription.emit(element.id)">
         <mat-icon>edit</mat-icon>
       </button>
       <button class="btn btn-danger btn-sm" (click)="deleteInscription.emit(element.id)">

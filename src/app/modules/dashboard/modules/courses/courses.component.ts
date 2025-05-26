@@ -4,6 +4,9 @@ import { CoursesService } from './services/courses.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CoursesFormComponent } from './components/courses-form/courses-form.component';
 import { CoursesDeleteComponent } from './components/courses-delete/courses-delete.component';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Observable } from 'rxjs';
+import { User } from '../../../../core/models';
 
 @Component({
   selector: 'app-courses',
@@ -14,9 +17,11 @@ export class CoursesComponent {
   courses: Course[] = [];
   isLoading: boolean = true; // Variable para controlar el estado de carga
   readonly dialog = inject(MatDialog);
+  authUser$: Observable<User | null>;
 
-  constructor(private courseService: CoursesService) {
+  constructor(private courseService: CoursesService, private authService: AuthService) {
     this.loadCourses(); // Carga los cursos usando un observable
+    this.authUser$ = this.authService.authUser$;
   }
 
   loadCourses() {

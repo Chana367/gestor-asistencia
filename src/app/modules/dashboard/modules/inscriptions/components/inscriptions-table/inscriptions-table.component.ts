@@ -4,6 +4,9 @@ import { Student } from '../../../students/models';
 import { Course } from '../../../courses/models/course.interface';
 import { StudentsService } from '../../../students/services/students.service';
 import { CoursesService } from '../../../courses/services/courses.service';
+import { AuthService } from '../../../../../../core/services/auth.service';
+import { Observable } from 'rxjs';
+import { User } from '../../../../../../core/models';
 
 @Component({
   selector: 'app-inscriptions-table',
@@ -24,12 +27,16 @@ export class InscriptionsTableComponent {
 
   students: Student[] = []
   courses: Course[] = []
-  
+
   displayedColumns: string[] = ['id', 'student-name', 'course-name', 'date-inscription', 'actions'];
 
-  constructor(private studentService: StudentsService, private courseService: CoursesService) {
+  authUser$: Observable<User | null>;
+
+  constructor(private studentService: StudentsService, private courseService: CoursesService, 
+    private authService: AuthService) {
     this.loadStudents(); // Carga los estudiantes usando un observable
     this.loadCourses(); // Carga los cursos usando un observable
+    this.authUser$ = this.authService.authUser$;
   }
 
   getStudentName(studentId: number): string {
@@ -55,7 +62,7 @@ export class InscriptionsTableComponent {
     });
   }
 
-  
+
   loadCourses() {
     this.courseService.getCourses$().subscribe({
       next: (courses) => {

@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
 import { StudentsService } from './services/students.service';
 import { StudentsFormComponent } from './components/students-form/students-form.component';
+import { Observable } from 'rxjs';
+import { User } from '../../../../core/models';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-students',
@@ -15,9 +18,11 @@ export class StudentsComponent {
   students: Student[] = [];
   isLoading: boolean = true; // Variable para controlar el estado de carga
   readonly dialog = inject(MatDialog);
+  authUser$: Observable<User | null>;
 
-  constructor(private studentService: StudentsService) {
+  constructor(private studentService: StudentsService, private authService: AuthService) {
     this.loadStudents(); // Carga los estudiantes usando un observable
+    this.authUser$ = this.authService.authUser$;
   }
 
   loadStudents() {
