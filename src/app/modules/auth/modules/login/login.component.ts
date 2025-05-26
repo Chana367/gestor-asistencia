@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserCredentials } from '../../models/user-credentials.interface';
 import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
     { username: 'admin', password: 'admin' },
     { username: 'user', password: 'user' }]
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private fb: FormBuilder) {
     // Cargar los usuarios desde el almacenamiento local al inicializar el componente
     this.users = [...this.users, ...JSON.parse(localStorage.getItem('users') || '[]')]
   }
