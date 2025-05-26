@@ -1,54 +1,98 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../models/course.interface';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-let courses: Course[] = [
-  { id: 1, name: 'Angular', hours: 40 },
-  { id: 2, name: 'React', hours: 35 },
-  { id: 3, name: 'Diseño Web', hours: 25 },
-  { id: 4, name: 'Oratoria', hours: 20 },
-  { id: 5, name: 'Backend', hours: 50 }
-];
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CoursesService {
 
+  private courses: Course[] = [];
+  private coursesSubject = new BehaviorSubject<Course[]>([]);
+  courses$ = this.coursesSubject.asObservable();
+
+  private apiUrl = 'http://localhost:3000/courses';
+
+  constructor(private http: HttpClient) {
+    this.http
+      .get<Course[]>(this.apiUrl)
+      .subscribe({
+        next: (response) => {
+          if (response && response.length > 0) {
+            this.courses = response;
+            this.coursesSubject.next(this.courses);
+          } else {
+            alert('No se encontraron cursos');
+          }
+        },
+        error: (err) => {
+          console.error('Error al obtener cursos:', err);
+        }
+      });
+  }
+
   getCourses$(): Observable<Course[]> {
-    return new Observable<Course[]>((observer) => {
-      observer.next(courses);
-      observer.complete();
-    });
+    return this.courses$;
   }
 
   getCourseById(id: string | null): Observable<Course | null> {
-    return of([...courses]).pipe(
-      map((courses) => courses.find((course) => course.id === Number(id)) || null),
-    )
+    return this.http
+      .get<Course[]>(`${this.apiUrl}?id=${id}`)
+      .pipe(
+        map((response) => {
+          if (response && response.length > 0) {
+            return response[0];
+          } else {
+            return null;
+          }
+        })
+      );
   }
 
-  postCourse(newCourse: Course, id?: number): void {
-    if (newCourse) {
-      if (!id) {
-        // Agregar el nuevo curso a la lista de cursos
-        newCourse.id = courses[courses.length - 1].id + 1; // Asignar un ID unico
-        courses = [...courses, newCourse]
-        console.log('Nuevo curso agregado:', newCourse);
-      } else {
-        courses = courses.map(course => {
-          if (course.id === id) {
-            return { ...course, ...newCourse }; // Actualiza el curso existente
-          }
-          return course;
-        });
-      }
+postCourse(newCourse: Course, id?: number): void {
+  if (newCourse) {
+    if (!id) {
+      // POST: Crear nuevo curso
+      this.http.post<Course>('http://localhost:3000/courses', newCourse).subscribe({
+        next: (createdCourse) => {
+          this.courses = [...this.courses, createdCourse];
+          this.coursesSubject.next(this.courses);
+          console.log('Nuevo estudiante agregado:', createdCourse);
+        },
+        error: (err) => {
+          console.error('Error al agregar estudiante:', err);
+        }
+      });
+    } else {
+      // PUT: Actualizar curso existente
+      this.http.put<Course>(`http://localhost:3000/courses/${id}`, newCourse).subscribe({
+        next: (updatedCourse) => {
+          this.courses = this.courses.map((course: Course) =>
+            course.id === id ? updatedCourse : course
+          );
+          this.coursesSubject.next(this.courses);
+          console.log('Estudiante actualizado:', updatedCourse);
+        },
+        error: (err) => {
+          console.error('Error al actualizar estudiante:', err);
+        }
+      });
     }
   }
+}
+
 
   deleteCourse(id: number): void {
-    courses = courses.filter(course => course.id !== id); // Filtra el curso que se desea eliminar
-    console.log('Curso eliminado:', id);
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+      next: () => {
+        this.courses = this.courses.filter((course: Course) => course.id !== id);
+        this.coursesSubject.next(this.courses);
+        console.log('Curso eliminado:', id);
+      },
+      error: (err) => {
+        console.error('Error al eliminar curso:', err);
+      }
+    });
   }
-
+  
 }

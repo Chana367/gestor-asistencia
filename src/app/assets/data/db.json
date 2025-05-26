@@ -1,9 +1,73 @@
 {
-  "students": [],
-  "courses": [],
+  "students": [
+    {
+      "id": "1",
+      "name": "Juan",
+      "lastName": "Pérez",
+      "email": "juan.perez@example.com",
+      "phone": "+54 11 1234-5678",
+      "age": 20
+    },
+    {
+      "id": "3",
+      "name": "Carlos",
+      "lastName": "López",
+      "email": "carlos.lopez@example.com",
+      "phone": "+54 11 3456-7890",
+      "age": 21
+    },
+    {
+      "id": "4",
+      "name": "Ana",
+      "lastName": "Martínez",
+      "email": "ana.martinez@example.com",
+      "phone": "+54 11 4567-8901",
+      "age": 23
+    },
+    {
+      "id": "5",
+      "name": "Luis",
+      "lastName": "Fernández",
+      "email": "luis.fernandez@example.com",
+      "phone": "+54 11 5678-9012",
+      "age": 24
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "name": "Angular",
+      "hours": 40
+    },
+    {
+      "id": "2",
+      "name": "React",
+      "hours": 35
+    },
+    {
+      "name": "Oratoriaaaa",
+      "hours": 20,
+      "id": "4"
+    },
+    {
+      "id": "5",
+      "name": "Backend",
+      "hours": 50
+    },
+    {
+      "id": "8692",
+      "name": "MAtes2",
+      "hours": 22
+    },
+    {
+      "id": "7640",
+      "name": "Random",
+      "hours": 2
+    }
+  ],
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "username": "John",
       "email": "fake@mail.com",
       "password": "123456",
@@ -11,12 +75,56 @@
       "token": "da2f0b2-3c4e-4d5a-8b6c-7e8f9a0b1c2d"
     },
     {
-      "id": 2,
+      "id": "2",
       "username": "Jane",
       "email": "fake2@gmail.com",
       "password": "123456",
       "role": "user",
       "token": "a1mn0b2-3c4e-4d5a-8b6c-7e8f9a0b1c2d"
+    }
+  ],
+  "inscriptions": [
+    {
+      "id": "1",
+      "id_student": 1,
+      "id_course": 1,
+      "date_inscription": "2023-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "4",
+      "id_student": 4,
+      "id_course": 4,
+      "date_inscription": "2023-04-20T00:00:00.000Z"
+    },
+    {
+      "id_student": "3",
+      "id_course": "4",
+      "date_inscription": "2023-05-15T00:00:00.000Z",
+      "id": "5"
+    },
+    {
+      "id": "6",
+      "id_student": 1,
+      "id_course": 2,
+      "date_inscription": "2023-06-10T00:00:00.000Z"
+    },
+    {
+      "id": "8",
+      "id_student": 3,
+      "id_course": 4,
+      "date_inscription": "2023-08-20T00:00:00.000Z"
+    },
+    {
+      "id": "9",
+      "id_student": 4,
+      "id_course": 5,
+      "date_inscription": "2023-09-15T00:00:00.000Z"
+    },
+    {
+      "id": "10",
+      "id_student": 5,
+      "id_course": 1,
+      "date_inscription": "2023-10-10T00:00:00.000Z"
     }
   ]
 }

@@ -20,21 +20,21 @@ export class CoursesComponent {
   authUser$: Observable<User | null>;
 
   constructor(private courseService: CoursesService, private authService: AuthService) {
-    this.loadCourses(); // Carga los cursos usando un observable
     this.authUser$ = this.authService.authUser$;
+    this.loadCourses(); // Carga los cursos usando un observable
   }
 
   loadCourses() {
     this.courseService.getCourses$().subscribe({
       next: (courses) => {
         this.courses = courses;
+        this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los cursos
         console.log('Cursos cargados:', this.courses);
       },
-      error: (error: any) => console.error('Error al cargar los cursos:', error),
-      complete: () => {
+      error: (error: any) =>{
         this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los cursos
-        console.log('Carga de cursos completada');
-      }
+        console.error('Error al cargar los cursos:', error);
+      } 
     });
   }
 

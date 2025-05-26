@@ -21,20 +21,20 @@ export class StudentsComponent {
   authUser$: Observable<User | null>;
 
   constructor(private studentService: StudentsService, private authService: AuthService) {
-    this.loadStudents(); // Carga los estudiantes usando un observable
     this.authUser$ = this.authService.authUser$;
+    this.loadStudents(); // Carga los estudiantes usando un observable
   }
 
   loadStudents() {
     this.studentService.getStudents$().subscribe({
       next: (students) => {
         this.students = students;
+        this.isLoading = false; // Mueve esto aquí
         console.log('Estudiantes cargados:', this.students);
       },
-      error: (error: any) => console.error('Error al cargar los estudiantes:', error),
-      complete: () => {
-        this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los estudiantes
-        console.log('Carga de estudiantes completada');
+      error: (error: any) => {
+        console.error('Error al cargar los estudiantes:', error)
+        this.isLoading = false;
       }
     });
   }

@@ -1,9 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Inscription } from './models/inscription.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { InscriptionsService } from '../services/inscriptions.service';
 import { InscriptionsDeleteComponent } from './components/inscriptions-delete/inscriptions-delete.component';
 import { InscriptionsFormComponent } from './components/inscriptions-form/inscriptions-form.component';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Observable } from 'rxjs';
+import { User } from '../../../../core/models';
+import { InscriptionsService } from '../services/inscriptions.service';
 
 @Component({
   selector: 'app-inscriptions',
@@ -15,8 +18,10 @@ export class InscriptionsComponent {
   inscriptions: Inscription[] = [];
   isLoading: boolean = true; // Variable para controlar el estado de carga
   readonly dialog = inject(MatDialog);
+  authUser$: Observable<User | null>;
 
-  constructor(private inscriptionService: InscriptionsService) {
+  constructor(private inscriptionService: InscriptionsService, private authService: AuthService) {
+    this.authUser$ = this.authService.authUser$;
     this.loadInscriptions(); // Carga los inscripciones usando un observable
   }
 
@@ -24,12 +29,12 @@ export class InscriptionsComponent {
     this.inscriptionService.getInscriptions$().subscribe({
       next: (inscriptions) => {
         this.inscriptions = inscriptions;
+        this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los inscripciones
         console.log('Incripciones cargados:', this.inscriptions);
       },
-      error: (error: any) => console.error('Error al cargar los inscripciones:', error),
-      complete: () => {
+      error: (error: any) =>{
+        console.error('Error al cargar los inscripciones:', error),
         this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los inscripciones
-        console.log('Carga de inscripciones completada');
       }
     });
   }

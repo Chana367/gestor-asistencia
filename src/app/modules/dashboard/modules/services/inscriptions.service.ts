@@ -1,59 +1,87 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Inscription } from '../inscriptions/models/inscription.interface';
-import { map, Observable, of } from 'rxjs';
 
-let inscriptions: Inscription[] = [
-  { id: 1, id_student: 1, id_course: 1, date_inscription: new Date('2023-01-15') },
-  { id: 2, id_student: 2, id_course: 2, date_inscription: new Date('2023-02-10') },
-  { id: 3, id_student: 3, id_course: 3, date_inscription: new Date('2023-03-05') },
-  { id: 4, id_student: 4, id_course: 4, date_inscription: new Date('2023-04-20') },
-  { id: 5, id_student: 5, id_course: 5, date_inscription: new Date('2023-05-15') },
-  { id: 6, id_student: 1, id_course: 2, date_inscription: new Date('2023-06-10') },
-  { id: 7, id_student: 2, id_course: 3, date_inscription: new Date('2023-07-05') },
-  { id: 8, id_student: 3, id_course: 4, date_inscription: new Date('2023-08-20') },
-  { id: 9, id_student: 4, id_course: 5, date_inscription: new Date('2023-09-15') },
-  { id: 10, id_student: 5, id_course: 1, date_inscription: new Date('2023-10-10') }
-];
+@Injectable({ providedIn: 'root' })
 
-@Injectable({
-  providedIn: 'root'
-})
 export class InscriptionsService {
 
-  getInscriptions$(): Observable<Inscription[]> {
-    return new Observable<Inscription[]>((observer) => {
-      observer.next(inscriptions);
-      observer.complete();
+  private inscriptions: Inscription[] = [];
+  private inscriptionsSubject = new BehaviorSubject<Inscription[]>([]);
+  inscriptions$ = this.inscriptionsSubject.asObservable();
+
+  private apiUrl = 'http://localhost:3000/inscriptions';
+
+  constructor(private http: HttpClient) {
+    // Cargar inscripciones iniciales desde la API
+    this.http.get<Inscription[]>(this.apiUrl).subscribe({
+      next: (response) => {
+        if (response && response.length > 0) {
+          this.inscriptions = response;
+          this.inscriptionsSubject.next(this.inscriptions);
+        } else {
+          console.warn('No se encontraron inscripciones');
+        }
+      },
+      error: (err) => {
+        console.error('Error al obtener inscripciones:', err);
+      }
     });
   }
 
+  getInscriptions$(): Observable<Inscription[]> {
+    return this.inscriptions$;
+  }
+
   getInscriptionById(id: string | null): Observable<Inscription | null> {
-    return of([...inscriptions]).pipe(
-      map((inscriptions) => inscriptions.find((inscription) => inscription.id === Number(id)) || null),
-    )
+    return this.http.get<Inscription[]>(`${this.apiUrl}?id=${id}`).pipe(
+      map((response) => (response && response.length > 0 ? response[0] : null))
+    );
   }
 
   postInscription(newInscription: Inscription, id?: number): void {
     if (newInscription) {
       if (!id) {
-        // Agregar la nueva inscripcion a la lista de inscripciones
-        newInscription.id = inscriptions[inscriptions.length - 1].id + 1; // Asignar un ID unico
-        inscriptions = [...inscriptions, newInscription]
-        console.log('Nuevo inscripcion agregada:', newInscription);
-      } else {
-        inscriptions = inscriptions.map(inscription => {
-          if (inscription.id === id) {
-            return { ...inscription, ...newInscription }; // Actualiza la inscripcion existente
+        // POST: Crear nueva inscripción
+        this.http.post<Inscription>(this.apiUrl, newInscription).subscribe({
+          next: (createdInscription) => {
+            this.inscriptions = [...this.inscriptions, createdInscription];
+            this.inscriptionsSubject.next(this.inscriptions);
+            console.log('Nueva inscripción agregada:', createdInscription);
+          },
+          error: (err) => {
+            console.error('Error al agregar inscripción:', err);
           }
-          return inscription;
+        });
+      } else {
+        // PUT: Actualizar inscripción existente
+        this.http.put<Inscription>(`${this.apiUrl}/${id}`, newInscription).subscribe({
+          next: (updatedInscription) => {
+            this.inscriptions = this.inscriptions.map((inscription) =>
+              inscription.id === id ? updatedInscription : inscription
+            );
+            this.inscriptionsSubject.next(this.inscriptions);
+            console.log('Inscripción actualizada:', updatedInscription);
+          },
+          error: (err) => {
+            console.error('Error al actualizar inscripción:', err);
+          }
         });
       }
     }
   }
 
   deleteInscription(id: number): void {
-    inscriptions = inscriptions.filter(inscription => inscription.id !== id); // Filtra la inscripcion que se desea eliminar
-    console.log('Inscripcion eliminada:', id);
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+      next: () => {
+        this.inscriptions = this.inscriptions.filter((inscription) => inscription.id !== id);
+        this.inscriptionsSubject.next(this.inscriptions);
+        console.log('Inscripción eliminada:', id);
+      },
+      error: (err) => {
+        console.error('Error al eliminar inscripción:', err);
+      }
+    });
   }
-
 }

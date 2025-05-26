@@ -32,20 +32,20 @@ export class InscriptionsTableComponent {
 
   authUser$: Observable<User | null>;
 
-  constructor(private studentService: StudentsService, private courseService: CoursesService, 
+  constructor(private studentService: StudentsService, private courseService: CoursesService,
     private authService: AuthService) {
+    this.authUser$ = this.authService.authUser$;
     this.loadStudents(); // Carga los estudiantes usando un observable
     this.loadCourses(); // Carga los cursos usando un observable
-    this.authUser$ = this.authService.authUser$;
   }
 
   getStudentName(studentId: number): string {
-    const student = this.students.find(s => s.id === studentId);
+    const student = this.students.find(s => Number(s.id) === Number(studentId));
     return student ? `${student.name} ${student.lastName}` : 'Desconocido';
   }
 
   getCourseName(courseId: number): string {
-    const course = this.courses.find(c => c.id === courseId);
+    const course = this.courses.find(c => Number(c.id) === Number(courseId));
     return course ? course.name : 'Desconocido';
   }
 
@@ -55,13 +55,11 @@ export class InscriptionsTableComponent {
         this.students = students;
         console.log('Estudiantes cargados:', this.students);
       },
-      error: (error: any) => console.error('Error al cargar los estudiantes:', error),
-      complete: () => {
-        console.log('Carga de estudiantes completada');
+      error: (error: any) => {
+        console.error('Error al cargar los estudiantes:', error)
       }
     });
   }
-
 
   loadCourses() {
     this.courseService.getCourses$().subscribe({
@@ -69,9 +67,8 @@ export class InscriptionsTableComponent {
         this.courses = courses;
         console.log('Cursos cargados:', this.courses);
       },
-      error: (error: any) => console.error('Error al cargar los cursos:', error),
-      complete: () => {
-        console.log('Carga de cursos completada');
+      error: (error: any) => {
+        console.error('Error al cargar los cursos:', error);
       }
     });
   }

@@ -4,10 +4,6 @@ import { BehaviorSubject, map, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
-const users: User[] = [
-
-];
-
 @Injectable({
   providedIn: 'root'
 })
