@@ -53,7 +53,7 @@ postCourse(newCourse: Course, id?: number): void {
   if (newCourse) {
     if (!id) {
       // POST: Crear nuevo curso
-      this.http.post<Course>('http://localhost:3000/courses', newCourse).subscribe({
+      this.http.post<Course>(`${this.apiUrl}`, newCourse).subscribe({
         next: (createdCourse) => {
           this.courses = [...this.courses, createdCourse];
           this.coursesSubject.next(this.courses);
@@ -65,7 +65,7 @@ postCourse(newCourse: Course, id?: number): void {
       });
     } else {
       // PUT: Actualizar curso existente
-      this.http.put<Course>(`http://localhost:3000/courses/${id}`, newCourse).subscribe({
+      this.http.put<Course>(`${this.apiUrl}/${id}`, newCourse).subscribe({
         next: (updatedCourse) => {
           this.courses = this.courses.map((course: Course) =>
             course.id === id ? updatedCourse : course
