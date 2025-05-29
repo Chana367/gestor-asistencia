@@ -11,6 +11,7 @@ import { StudentsDeleteComponent } from './components/students-delete/students-d
 import { SharedModule } from '../../../../shared/shared.module';
 import { StudentDetailComponent } from './pages/student-detail/student-detail.component';
 import { StudentsFormComponent } from './components/students-form/students-form.component';
+import { InscriptionsDeleteComponent } from '../inscriptions/components/inscriptions-delete/inscriptions-delete.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { StudentsFormComponent } from './components/students-form/students-form.
     CommonModule,
     ReactiveFormsModule,
     StudentsRoutingModule,
-    SharedModule
+    SharedModule,
+
   ],
   exports: [
     StudentsComponent

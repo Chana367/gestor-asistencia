@@ -6,15 +6,28 @@
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>{{ (course$ | async)?.name }}</mat-card-title>
-        <img mat-card-md-image src="https://img.freepik.com/vector-gratis/concepto-educacion-online_52683-9211.jpg?semt=ais_hybrid&w=740">
+        <img mat-card-md-image
+          src="https://img.freepik.com/vector-gratis/concepto-educacion-online_52683-9211.jpg?semt=ais_hybrid&w=740">
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content>
       <p><strong>ID:</strong> {{ (course$ | async)?.id }}</p>
       <p><strong>Horas:</strong> {{ (course$ | async)?.hours }}</p>
+      <p>
+        <strong>Inscripciones:</strong>
+      </p>
+      <ul>
+        <li *ngFor="let student of (students$ | async)"
+          style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
+          <span>{{ student.name }} {{ student.lastName }}</span>
+          <button class="btn btn-danger btn-sm" (click)="onDeleteInscription(student.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </li>
+        <li *ngIf="!(students$ | async)?.length" style="text-align: center; list-style: none;">
+          No hay inscripciones.
+        </li>
+      </ul>
     </mat-card-content>
   </mat-card>
 </ng-template>
-
-
-

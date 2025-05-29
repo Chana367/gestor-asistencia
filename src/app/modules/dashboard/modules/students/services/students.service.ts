@@ -47,6 +47,14 @@ export class StudentsService {
         })
       );
   }
+
+  getStudentsByIds(ids: string[] | null): Observable<Student[]> {
+    if (!ids || ids.length === 0) {
+      return of([]);
+    }
+    const filteredStudents = this.students.filter((student: Student) => ids && ids.includes(String(student.id)));
+    return of(filteredStudents);
+  }
   postStudent(newStudent: Student, id?: number): void {
     if (newStudent) {
       if (!id) {

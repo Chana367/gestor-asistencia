@@ -49,37 +49,43 @@ export class CoursesService {
       );
   }
 
-postCourse(newCourse: Course, id?: number): void {
-  if (newCourse) {
-    if (!id) {
-      // POST: Crear nuevo curso
-      this.http.post<Course>(`${this.apiUrl}`, newCourse).subscribe({
-        next: (createdCourse) => {
-          this.courses = [...this.courses, createdCourse];
-          this.coursesSubject.next(this.courses);
-          console.log('Nuevo estudiante agregado:', createdCourse);
-        },
-        error: (err) => {
-          console.error('Error al agregar estudiante:', err);
-        }
-      });
-    } else {
-      // PUT: Actualizar curso existente
-      this.http.put<Course>(`${this.apiUrl}/${id}`, newCourse).subscribe({
-        next: (updatedCourse) => {
-          this.courses = this.courses.map((course: Course) =>
-            course.id === id ? updatedCourse : course
-          );
-          this.coursesSubject.next(this.courses);
-          console.log('Estudiante actualizado:', updatedCourse);
-        },
-        error: (err) => {
-          console.error('Error al actualizar estudiante:', err);
-        }
-      });
+  getCoursesByIds(ids: string[] | null): Observable<Course[]> {
+    if (!ids || ids.length === 0) {
+      return of([]);
+    }
+    const filteredCourses = this.courses.filter((course: Course) => ids && ids.includes(String(course.id)));
+    return of(filteredCourses);
+  }
+
+  postCourse(newCourse: Course, id?: number): void {
+    if (newCourse) {
+      if (!id) {
+        this.http.post<Course>(`${this.apiUrl}`, newCourse).subscribe({
+          next: (createdCourse) => {
+            this.courses = [...this.courses, createdCourse];
+            this.coursesSubject.next(this.courses);
+          },
+          error: (err) => {
+            console.error('Error al agregar estudiante:', err);
+          }
+        });
+      } else {
+        // PUT: Actualizar curso existente
+        this.http.put<Course>(`${this.apiUrl}/${id}`, newCourse).subscribe({
+          next: (updatedCourse) => {
+            this.courses = this.courses.map((course: Course) =>
+              course.id === id ? updatedCourse : course
+            );
+            this.coursesSubject.next(this.courses);
+            console.log('Estudiante actualizado:', updatedCourse);
+          },
+          error: (err) => {
+            console.error('Error al actualizar estudiante:', err);
+          }
+        });
+      }
     }
   }
-}
 
 
   deleteCourse(id: number): void {
@@ -94,5 +100,5 @@ postCourse(newCourse: Course, id?: number): void {
       }
     });
   }
-  
+
 }

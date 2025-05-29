@@ -1,6 +1,6 @@
-<mat-list>
+<mat-list *ngIf="authUser$ | async; let user">
   @for (item of items; track item) {
-    <mat-list-item routerLink="{{item.link}}">
+    <mat-list-item routerLink="{{item.link}}" *ngIf="item.permission.includes(user.role)">
       <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
       <div matListItemTitle>{{item.name}}</div>
     </mat-list-item>

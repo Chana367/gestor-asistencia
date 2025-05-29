@@ -92,34 +92,10 @@
   ],
   "inscriptions": [
     {
-      "id": "1",
-      "id_student": 1,
-      "id_course": 1,
-      "date_inscription": "2023-01-15T00:00:00.000Z"
-    },
-    {
-      "id": "4",
-      "id_student": 4,
-      "id_course": 4,
-      "date_inscription": "2023-04-20T00:00:00.000Z"
-    },
-    {
       "id_student": "3",
       "id_course": "4",
       "date_inscription": "2023-05-15T00:00:00.000Z",
       "id": "5"
-    },
-    {
-      "id": "6",
-      "id_student": 1,
-      "id_course": 2,
-      "date_inscription": "2023-06-10T00:00:00.000Z"
-    },
-    {
-      "id": "8",
-      "id_student": 3,
-      "id_course": 4,
-      "date_inscription": "2023-08-20T00:00:00.000Z"
     },
     {
       "id": "9",
@@ -132,6 +108,12 @@
       "id_student": 5,
       "id_course": 1,
       "date_inscription": "2023-10-10T00:00:00.000Z"
+    },
+    {
+      "id": "ab2d",
+      "id_student": "1",
+      "id_course": "1",
+      "date_inscription": "2025-05-15T03:00:00.000Z"
     }
   ]
 }

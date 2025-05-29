@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Observable } from 'rxjs';
+import { User } from '../../../../core/models';
 
 export interface Section {
   name: string;
   icon: string;
   link: string;
+  permission: string[];
 }
 
 @Component({
@@ -18,28 +22,42 @@ export class NavMenuComponent {
     {
       name: 'Inicio',
       icon: 'home',
-      link: '/dashboard'
+      link: '/dashboard',
+      permission: ['admin', 'user']
     },
     {
       name: 'Alumnos',
       icon: 'people',
-      link: '/dashboard/students'
+      link: '/dashboard/students',
+      permission: ['admin', 'user']
     },
     {
       name: 'Cursos',
       icon: 'book',
-      link: '/dashboard/courses'
+      link: '/dashboard/courses',
+      permission: ['admin', 'user']
     },
     {
       name: 'Inscripciones',
       icon: 'school',
-      link: '/dashboard/inscriptions'
+      link: '/dashboard/inscriptions',
+      permission: ['admin', 'user']
+    },
+    {
+      name: 'Usuarios',
+      icon: 'manage_accounts',
+      link: '/dashboard/users',
+      permission: ['admin']
     }
   ];
 
-  constructor(private router: Router) {}
+  authUser$: Observable<User | null>;
+  
+  constructor(private router: Router, private authService: AuthService) {
+    this.authUser$ = this.authService.authUser$;
+  }
+
   logout() {
-    console.log('Logout clicked');
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.router.navigate(['/auth/login']);

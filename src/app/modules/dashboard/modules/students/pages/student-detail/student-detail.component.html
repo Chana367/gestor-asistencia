@@ -6,16 +6,28 @@
     <mat-card-header>
       <mat-card-title-group>
         <mat-card-title>{{ (student$ | async)?.name }} {{ (student$ | async)?.lastName }}</mat-card-title>
-        <img mat-card-md-image src="https://imgs.search.brave.com/QikUBpY57bDL1fWqD4-nIgcfwzKpFiOJtpqr0gkDDL8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNC8w/NC8wMi8xMC8yNS9t/YW4tMzAzNzkyXzY0/MC5wbmc">
+        <img mat-card-md-image
+          src="https://imgs.search.brave.com/QikUBpY57bDL1fWqD4-nIgcfwzKpFiOJtpqr0gkDDL8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNC8w/NC8wMi8xMC8yNS9t/YW4tMzAzNzkyXzY0/MC5wbmc">
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content>
       <p><strong>Edad:</strong> {{ (student$ | async)?.age }}</p>
       <p><strong>Correo:</strong> {{ (student$ | async)?.email }}</p>
       <p><strong>Teléfono:</strong> {{ (student$ | async)?.phone }}</p>
+      <p>
+        <strong>Inscripciones:</strong>
+      </p>
+      <ul>
+        <li *ngFor="let course of (courses$ | async)" style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
+          <span>{{ course.name }}</span>
+          <button class="btn btn-danger btn-sm" (click)="onDeleteInscription(course.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </li>
+        <li *ngIf="!(courses$ | async)?.length" style="text-align: center; list-style: none;">
+          No hay inscripciones.
+        </li>
+      </ul>
     </mat-card-content>
   </mat-card>
 </ng-template>
-
-
-
