@@ -36,7 +36,7 @@ export class InscriptionsFormComponent {
       id_course: [this.data.inscription?.id_course || '', Validators.required],
       date_inscription: [this.data.inscription?.date_inscription || '', Validators.required],
     });
-    
+
     if(this.inscription?.id){
       this.inscriptionForm.addControl('id', this.fb.control(this.data.inscription?.id || null));
     }
@@ -61,6 +61,6 @@ export class InscriptionsFormComponent {
   }
 
   onClose(): void {
-    this.dialogRef.close(); // Cierra el diálogo sin devolver datos
+    this.dialogRef.close("close"); // Cierra el diálogo sin devolver datos
   }
 }

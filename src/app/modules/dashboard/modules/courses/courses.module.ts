@@ -8,6 +8,10 @@ import { CoursesFormComponent } from './components/courses-form/courses-form.com
 import { SharedModule } from '../../../../shared/shared.module';
 import { CoursesComponent } from './courses.component';
 import { CoursesDetailComponent } from './pages/courses-detail/courses-detail.component';
+import { StoreModule } from '@ngrx/store';
+import { coursesFeature } from './store/courses.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CoursesEffects } from './store/courses.effects';
 
 
 @NgModule({
@@ -21,7 +25,9 @@ import { CoursesDetailComponent } from './pages/courses-detail/courses-detail.co
   imports: [
     CommonModule,
     CoursesRoutingModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(coursesFeature),
+    EffectsModule.forFeature([CoursesEffects]),
   ]
 })
 export class CoursesModule { }

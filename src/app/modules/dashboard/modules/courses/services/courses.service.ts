@@ -13,26 +13,10 @@ export class CoursesService {
 
   private apiUrl = 'http://localhost:3000/courses';
 
-  constructor(private http: HttpClient) {
-    this.http
-      .get<Course[]>(this.apiUrl)
-      .subscribe({
-        next: (response) => {
-          if (response && response.length > 0) {
-            this.courses = response;
-            this.coursesSubject.next(this.courses);
-          } else {
-            alert('No se encontraron cursos');
-          }
-        },
-        error: (err) => {
-          console.error('Error al obtener cursos:', err);
-        }
-      });
-  }
+  constructor(private http: HttpClient) {}
 
   getCourses$(): Observable<Course[]> {
-    return this.courses$;
+    return this.http.get<Course[]>(this.apiUrl);
   }
 
   getCourseById(id: string | null): Observable<Course | null> {
@@ -57,48 +41,19 @@ export class CoursesService {
     return of(filteredCourses);
   }
 
-  postCourse(newCourse: Course, id?: number): void {
-    if (newCourse) {
-      if (!id) {
-        this.http.post<Course>(`${this.apiUrl}`, newCourse).subscribe({
-          next: (createdCourse) => {
-            this.courses = [...this.courses, createdCourse];
-            this.coursesSubject.next(this.courses);
-          },
-          error: (err) => {
-            console.error('Error al agregar estudiante:', err);
-          }
-        });
-      } else {
-        // PUT: Actualizar curso existente
-        this.http.put<Course>(`${this.apiUrl}/${id}`, newCourse).subscribe({
-          next: (updatedCourse) => {
-            this.courses = this.courses.map((course: Course) =>
-              course.id === id ? updatedCourse : course
-            );
-            this.coursesSubject.next(this.courses);
-            console.log('Estudiante actualizado:', updatedCourse);
-          },
-          error: (err) => {
-            console.error('Error al actualizar estudiante:', err);
-          }
-        });
-      }
-    }
+  postCourse(newCourse: Course): Observable<Course> {
+    return this.http.post<Course>(this.apiUrl, newCourse);
   }
 
+  updateCourse(updatedCourse: Course): Observable<Course> {
+    const id = updatedCourse.id;
+    console.log('Updating course with ID:', id);
+    console.log('Updated course data:', updatedCourse);
+    return this.http.put<Course>(`${this.apiUrl}/${id}`, updatedCourse);
+  }
 
-  deleteCourse(id: number): void {
-    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
-      next: () => {
-        this.courses = this.courses.filter((course: Course) => course.id !== id);
-        this.coursesSubject.next(this.courses);
-        console.log('Curso eliminado:', id);
-      },
-      error: (err) => {
-        console.error('Error al eliminar curso:', err);
-      }
-    });
+  deleteCourse(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
 }

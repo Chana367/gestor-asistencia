@@ -63,6 +63,11 @@
       "id": "7640",
       "name": "Random",
       "hours": 2
+    },
+    {
+      "id": "1a6e",
+      "name": "Lengua",
+      "hours": 11
     }
   ],
   "users": [
@@ -104,10 +109,10 @@
       "date_inscription": "2023-09-15T00:00:00.000Z"
     },
     {
-      "id": "10",
       "id_student": "5",
       "id_course": "1",
-      "date_inscription": "2023-10-10T00:00:00.000Z"
+      "date_inscription": "2023-10-10T00:00:00.000Z",
+      "id": "10"
     }
   ]
 }
