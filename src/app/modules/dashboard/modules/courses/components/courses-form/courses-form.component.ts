@@ -43,8 +43,6 @@ export class CoursesFormComponent {
     if (this.courseForm.valid) {
       const newCourse: Course = this.courseForm.value;
       this.dialogRef.close(newCourse);
-    } else {
-      console.log('Formulario inválido');
     }
   }
 

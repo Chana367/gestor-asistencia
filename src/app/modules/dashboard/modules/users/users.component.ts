@@ -29,7 +29,6 @@ export class UsersComponent {
       next: (users) => {
         this.users = users;
         this.isLoading = false;
-        console.log('Usuarios cargados:', this.users);
       },
       error: (error: any) => {
         console.error('Error al cargar los usuarios:', error);

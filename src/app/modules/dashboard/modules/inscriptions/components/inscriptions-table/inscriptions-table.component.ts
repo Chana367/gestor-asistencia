@@ -53,7 +53,6 @@ export class InscriptionsTableComponent {
     this.studentService.getStudents$().subscribe({
       next: (students) => {
         this.students = students;
-        console.log('Estudiantes cargados:', this.students);
       },
       error: (error: any) => {
         console.error('Error al cargar los estudiantes:', error)
@@ -65,7 +64,6 @@ export class InscriptionsTableComponent {
     this.courseService.getCourses$().subscribe({
       next: (courses) => {
         this.courses = courses;
-        console.log('Cursos cargados:', this.courses);
       },
       error: (error: any) => {
         console.error('Error al cargar los cursos:', error);

@@ -69,7 +69,7 @@ export class InscriptionsService {
           const inscriptionId = inscripciones[0].id;
           this.deleteInscription(inscriptionId).subscribe({
             next: () => {
-              console.log(`Inscripción ${inscriptionId} eliminada correctamente`);
+              // console.log(`Inscripción ${inscriptionId} eliminada correctamente`);
             },
             error: (err) => {
               console.error('Error al eliminar inscripción:', err);

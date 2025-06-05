@@ -13,7 +13,7 @@ export class LoginComponent {
   errorMessage: string = '';
   loginForm: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder, private authService: AuthService) {
+  constructor( private fb: FormBuilder, private authService: AuthService) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],

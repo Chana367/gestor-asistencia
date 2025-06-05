@@ -45,7 +45,6 @@ export class UsersService {
         this.http.post<User>(this.apiUrl, newUser).subscribe({
           next: (createdUser) => {
             this.loadUsers();
-            console.log('Nuevo usuario agregado:', createdUser);
           },
           error: (err) => {
             console.error('Error al agregar usuario:', err);
@@ -56,7 +55,6 @@ export class UsersService {
         this.http.put<User>(`${this.apiUrl}/${id}`, newUser).subscribe({
           next: (updatedUser) => {
             this.loadUsers();
-            console.log('Usuario actualizado:', updatedUser);
           },
           error: (err) => {
             console.error('Error al actualizar usuario:', err);
@@ -70,7 +68,6 @@ export class UsersService {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe({
       next: () => {
         this.loadUsers();
-        console.log('Usuario eliminado:', id);
       },
       error: (err) => {
         console.error('Error al eliminar usuario:', err);

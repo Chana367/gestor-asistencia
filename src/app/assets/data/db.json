@@ -76,6 +76,7 @@
       "password": "123456",
       "email": "fake@mail.com",
       "role": "admin",
+      "token": "abc123-admin-token",
       "id": "1"
     },
     {
@@ -91,7 +92,15 @@
       "password": "Chanita",
       "email": "paredesfrancisco031@gmail.com",
       "role": "admin",
+      "token": "abc321-admin1-token",
       "id": "3f69"
+    },
+    {
+      "id": "e9b6",
+      "username": "Chana",
+      "password": "123456",
+      "role": "user",
+      "token": "vrvhqbez-pkos-tywr-kt2g-222lj2pev5b"
     }
   ],
   "inscriptions": [
@@ -112,6 +121,12 @@
       "id_course": "1",
       "date_inscription": "2023-10-10T00:00:00.000Z",
       "id": "10"
+    },
+    {
+      "id": "df96",
+      "id_student": "4",
+      "id_course": "2",
+      "date_inscription": "2025-06-18T03:00:00.000Z"
     }
   ]
 }

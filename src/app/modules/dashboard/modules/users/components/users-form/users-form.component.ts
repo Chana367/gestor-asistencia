@@ -28,6 +28,7 @@ export class UsersFormComponent {
       password: ['', [Validators.required, Validators.minLength(4)]],
       email: ['', [Validators.required, Validators.email]],
       role: ['', [Validators.required]],
+      token: ['']
     });
 
     if (this.data?.user) {
@@ -40,7 +41,7 @@ export class UsersFormComponent {
       const newUser: User = this.userForm.value;
       this.dialogRef.close(newUser);
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 

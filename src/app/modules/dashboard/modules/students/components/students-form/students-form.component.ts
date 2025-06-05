@@ -43,7 +43,7 @@ export class StudentsFormComponent {
       const newStudent: Student = this.studentForm.value;
       this.dialogRef.close(newStudent);
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 
