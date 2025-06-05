@@ -72,12 +72,11 @@
   ],
   "users": [
     {
-      "id": "1",
       "username": "John",
-      "email": "fake@mail.com",
       "password": "123456",
+      "email": "fake@mail.com",
       "role": "admin",
-      "token": "da2f0b2-3c4e-4d5a-8b6c-7e8f9a0b1c2d"
+      "id": "1"
     },
     {
       "id": "2",

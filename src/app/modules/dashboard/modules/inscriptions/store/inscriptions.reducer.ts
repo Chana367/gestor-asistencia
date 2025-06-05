@@ -76,7 +76,7 @@ on(InscriptionsActions.loadInscriptionsSuccess, (state, { inscriptions }) => ({
   })),
   on(InscriptionsActions.deleteInscriptionSuccess, (state, action) => ({
     ...state,
-    inscriptions: state.inscriptions.filter(insc => insc.id !== action.id),
+    inscriptions: state.inscriptions.filter(insc => String(insc.id) !== String(action.id)),
     loading: false,
     error: null,
   })),

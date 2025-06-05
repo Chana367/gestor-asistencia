@@ -36,8 +36,11 @@ export class CoursesService {
     if (!ids || ids.length === 0) {
       return of([]);
     }
-    const filteredCourses = this.courses.filter((course: Course) => ids && ids.includes(String(course.id)));
-    return of(filteredCourses);
+    return this.getCourses$().pipe(
+      map((courses: Course[]) =>
+        courses.filter((course: Course) => ids && ids.includes(String(course.id)))
+      )
+    );
   }
 
   postCourse(newCourse: Course): Observable<Course> {

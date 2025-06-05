@@ -47,7 +47,7 @@ export class InscriptionsComponent implements OnInit {
     let inscription: Inscription | null = null;
     if (id) {
       const inscriptions = await firstValueFrom(this.inscriptions$);
-      inscription = inscriptions?.find(insc => insc.id === id) ?? null;
+      inscription = inscriptions?.find(insc => String(insc.id) === String(id)) ?? null;
     }
     const dialogRef = this.dialog.open(InscriptionsFormComponent, {
       width: '60vw',

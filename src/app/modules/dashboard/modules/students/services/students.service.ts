@@ -21,9 +21,7 @@ export class StudentsService {
 
   getStudentById(id: string | null): Observable<Student | null> {
     return this.http
-      .get<Student[]>(
-        `http://localhost:3000/students?id=${id}`
-      )
+      .get<Student[]>(`${this.apiUrl}?id=${id}`)
       .pipe(
         map((response) => {
           if (response && response.length > 0) {
@@ -39,8 +37,11 @@ export class StudentsService {
     if (!ids || ids.length === 0) {
       return of([]);
     }
-    const filteredStudents = this.students.filter((student: Student) => ids && ids.includes(String(student.id)));
-    return of(filteredStudents);
+    return this.getStudents$().pipe(
+      map((students: Student[]) =>
+        students.filter((student: Student) => ids && ids.includes(String(student.id)))
+      )
+    );
   }
 
   postStudent(newStudent: Student): Observable<Student> {

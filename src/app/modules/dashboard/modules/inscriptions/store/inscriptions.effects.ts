@@ -58,7 +58,7 @@ export class InscriptionsEffects {
       return this.actions$.pipe(
         ofType(InscriptionsActions.deleteInscription),
         concatMap(({ id }) =>
-          this.inscriptionsService.deleteInscription(id).pipe(
+          this.inscriptionsService.deleteInscription(String(id)).pipe(
             map(() => InscriptionsActions.deleteInscriptionSuccess({ id })),
             catchError((error) =>
               of(InscriptionsActions.deleteInscriptionFailure({ error: error?.message || 'No se pudo eliminar la inscripción.' }))

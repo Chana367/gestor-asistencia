@@ -6,6 +6,8 @@ import { Course } from '../courses/models/course.interface';
 import { CoursesService } from '../courses/services/courses.service';
 import { Student } from '../students/models';
 import { StudentsService } from '../students/services/students.service';
+import { Store } from '@ngrx/store';
+import { InscriptionsActions } from '../inscriptions/store/inscriptions.actions';
 
 @Injectable({ providedIn: 'root' })
 
@@ -17,7 +19,9 @@ export class InscriptionsService {
 
   private apiUrl = 'http://localhost:3000/inscriptions';
 
-  constructor(private http: HttpClient, private courseService: CoursesService, private studentsService: StudentsService) {}
+  constructor(private http: HttpClient, private courseService: CoursesService, private studentsService: StudentsService,
+    private store: Store
+  ) {}
 
   getInscriptions$(): Observable<Inscription[]> {
     return this.http.get<Inscription[]>(this.apiUrl);
@@ -59,12 +63,18 @@ export class InscriptionsService {
 
   // Elimina una inscripción por id_student e id_course
   deleteInscriptionByIdStudentAndIdCourse(studentId: string, courseId: string): void {
-    // Primero obtenemos la inscripción con esos campos
     this.http.get<Inscription[]>(`${this.apiUrl}?id_student=${studentId}&id_course=${courseId}`).subscribe({
       next: (inscripciones) => {
         if (inscripciones && inscripciones.length > 0) {
           const inscriptionId = inscripciones[0].id;
-          this.deleteInscription(inscriptionId);
+          this.deleteInscription(inscriptionId).subscribe({
+            next: () => {
+              console.log(`Inscripción ${inscriptionId} eliminada correctamente`);
+            },
+            error: (err) => {
+              console.error('Error al eliminar inscripción:', err);
+            }
+          });
         } else {
           console.warn(`No se encontró inscripción para estudiante ${studentId} y curso ${courseId}`);
         }
@@ -74,6 +84,7 @@ export class InscriptionsService {
       }
     });
   }
+
 
   postInscription(newInscription: Inscription): Observable<Inscription> {
     // POST: Crear nueva inscripción
@@ -86,13 +97,8 @@ export class InscriptionsService {
     return this.http.put<Inscription>(`${this.apiUrl}/${id}`, updatedInscription);
   }
 
-  deleteInscription(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
-      map(() => {
-        this.inscriptions = this.inscriptions.filter((inscription) => inscription.id !== id);
-        this.inscriptionsSubject.next(this.inscriptions);
-        return { success: true };
-      })
-    );
+  deleteInscription(id: string): Observable<any> {
+    // Solo realiza el DELETE, la actualización del estado debe manejarse en el store (ngrx)
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
