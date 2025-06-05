@@ -61,6 +61,6 @@ export class InscriptionsFormComponent {
   }
 
   onClose(): void {
-    this.dialogRef.close("close"); // Cierra el diálogo sin devolver datos
+    this.dialogRef.close(); // Cierra el diálogo sin devolver datos
   }
 }

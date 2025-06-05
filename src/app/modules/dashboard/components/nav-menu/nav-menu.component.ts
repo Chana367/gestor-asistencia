@@ -26,7 +26,7 @@ export class NavMenuComponent {
       permission: ['admin', 'user']
     },
     {
-      name: 'Alumnos',
+      name: 'Estudiantes',
       icon: 'people',
       link: '/dashboard/students',
       permission: ['admin', 'user']

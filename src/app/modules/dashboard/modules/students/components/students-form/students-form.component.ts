@@ -20,7 +20,9 @@ export class StudentsFormComponent {
 
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<StudentsFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StudentFormData) {
-    this.studentForm = this.fb.group({
+    
+      this.student = this.data.student;
+      this.studentForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
@@ -28,6 +30,9 @@ export class StudentsFormComponent {
       age: ['', [Validators.required, Validators.min(3), Validators.max(105), Validators.pattern(/^\d+$/)]],
     });
 
+    if (this.student?.id) {
+      this.studentForm.addControl('id', this.fb.control(this.student.id));
+    }
     if (this.data?.student) {
       this.studentForm.patchValue(this.data.student);
     }

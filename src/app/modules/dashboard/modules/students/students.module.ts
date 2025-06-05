@@ -11,7 +11,10 @@ import { StudentsDeleteComponent } from './components/students-delete/students-d
 import { SharedModule } from '../../../../shared/shared.module';
 import { StudentDetailComponent } from './pages/student-detail/student-detail.component';
 import { StudentsFormComponent } from './components/students-form/students-form.component';
-import { InscriptionsDeleteComponent } from '../inscriptions/components/inscriptions-delete/inscriptions-delete.component';
+import { StoreModule } from '@ngrx/store';
+import { studentsFeature } from './store/students.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { StudentsEffects } from './store/students.effects';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,8 @@ import { InscriptionsDeleteComponent } from '../inscriptions/components/inscript
     ReactiveFormsModule,
     StudentsRoutingModule,
     SharedModule,
+    StoreModule.forFeature(studentsFeature),
+    EffectsModule.forFeature([StudentsEffects]),
 
   ],
   exports: [

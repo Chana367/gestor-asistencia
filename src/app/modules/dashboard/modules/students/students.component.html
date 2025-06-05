@@ -7,11 +7,11 @@
   </div>
 </div>
 
-<ng-container *ngIf="isLoading; else notLoading">
+<ng-container *ngIf="isLoading$ | async; else notLoading">
   <p>Cargando, por favor espere...</p>
 </ng-container>
 
 <ng-template #notLoading>
-  <app-students-table [dataSource]="students" (editStudent)="onSaveStudent($event)"
+  <app-students-table [dataSource]="(students$ | async) || []" (editStudent)="onSaveStudent($event)"
   (deleteStudent)="onDeleteStudent($event)"></app-students-table>
 </ng-template>

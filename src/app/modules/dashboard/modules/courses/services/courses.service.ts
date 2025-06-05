@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Course } from '../models/course.interface';
 import { map, Observable, of, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class CoursesService {
@@ -47,8 +46,6 @@ export class CoursesService {
 
   updateCourse(updatedCourse: Course): Observable<Course> {
     const id = updatedCourse.id;
-    console.log('Updating course with ID:', id);
-    console.log('Updated course data:', updatedCourse);
     return this.http.put<Course>(`${this.apiUrl}/${id}`, updatedCourse);
   }
 

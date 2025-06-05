@@ -1,72 +1,90 @@
-import { Component, inject } from '@angular/core';
-import { Student } from './models';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
-import { StudentsService } from './services/students.service';
-import { StudentsFormComponent } from './components/students-form/students-form.component';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { Student } from './models';
 import { User } from '../../../../core/models';
 import { AuthService } from '../../../../core/services/auth.service';
+import { StudentsFormComponent } from './components/students-form/students-form.component';
+import { StudentsDeleteComponent } from './components/students-delete/students-delete.component';
+import { StudentsActions } from './store/students.actions';
+import {
+  selectStudents,
+  selectStudentsLoading,
+  selectStudentsError
+} from './store/students.selectors';
 
 @Component({
   selector: 'app-students',
   standalone: false,
   templateUrl: './students.component.html',
-  styleUrl: './students.component.scss'
+  styleUrls: ['./students.component.scss']
 })
-export class StudentsComponent {
-  students: Student[] = [];
-  isLoading: boolean = true; // Variable para controlar el estado de carga
+export class StudentsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
+
+  students$: Observable<Student[] | null>;
+  isLoading$: Observable<boolean>;
+  error$: Observable<string | null>;
   authUser$: Observable<User | null>;
 
-  constructor(private studentService: StudentsService, private authService: AuthService) {
+  constructor(
+    private store: Store,
+    private authService: AuthService
+  ) {
     this.authUser$ = this.authService.authUser$;
-    this.loadStudents(); // Carga los estudiantes usando un observable
+    this.students$ = this.store.select(selectStudents);
+    this.isLoading$ = this.store.select(selectStudentsLoading);
+    this.error$ = this.store.select(selectStudentsError);
   }
 
-  loadStudents() {
-    this.studentService.getStudents$().subscribe({
-      next: (students) => {
-        this.students = students;
-        this.isLoading = false; // Mueve esto aquí
-        console.log('Estudiantes cargados:', this.students);
-      },
-      error: (error: any) => {
-        console.error('Error al cargar los estudiantes:', error)
-        this.isLoading = false;
-      }
-    });
+  ngOnInit(): void {
+    this.onLoadStudents();
   }
 
-  onSaveStudent(id?: number): void {
-    const student = id ? this.students.find(student => student.id === id) : null; // Busca el estudiante por ID si se proporciona uno
+  async onSaveStudent(id?: number): Promise<void> {
+    let student: Student | null = null;
+
+    if (id) {
+      const students = await firstValueFrom(this.students$);
+      student = students?.find(s => s.id === id) ?? null;
+    }
+
     const dialogRef = this.dialog.open(StudentsFormComponent, {
       width: '60vw',
       height: 'auto',
       panelClass: 'custom-dialog-container',
-      disableClose: true, // Deshabilita el cierre al hacer clic fuera del dialog
-      data: { student: student } // Pasa los datos del estudiante al formulario
+      disableClose: true,
+      data: { student }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.studentService.postStudent(result, id); // Guarda el nuevo estudiante o los cambios realizados
-      this.loadStudents(); // Recarga la lista de estudiantes
+      if (result) {
+        if (id) {
+          this.store.dispatch(StudentsActions.updateStudent({ student: result }));
+        } else {
+          this.store.dispatch(StudentsActions.createStudent({ student: result }));
+        }
+      }
     });
   }
 
-  onDeleteStudent(id: number) {
+  onLoadStudents() {
+    this.store.dispatch(StudentsActions.loadStudents());
+  }
+
+  onDeleteStudent(id: number): void {
     const dialogRef = this.dialog.open(StudentsDeleteComponent, {
       width: '250px',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '0ms',
-      autoFocus: false, // Deshabilita el enfoque automatico en el dialog
+      autoFocus: false
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.studentService.deleteStudent(id); // Elimina el estudiante si se confirma
-        this.loadStudents(); // Recarga la lista de estudiantes
+        this.store.dispatch(StudentsActions.deleteStudent({ id }));
       }
     });
   }

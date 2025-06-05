@@ -49,7 +49,6 @@ export class CoursesComponent implements OnInit {
       const courses = await firstValueFrom(this.courses$);
       course = courses?.find(c => c.id === id) ?? null;
     }
-    console.log(course)
     const dialogRef = this.dialog.open(CoursesFormComponent, {
       width: '60vw',
       height: 'auto',
