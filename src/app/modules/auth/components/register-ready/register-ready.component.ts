@@ -13,7 +13,6 @@ export class RegisterReadyComponent {
   constructor(private router: Router, public dialogRef: MatDialogRef<RegisterReadyComponent>) {}
 
   onConfirm() {
-    console.log('Registration confirmed');
     // Redirigir a la página de inicio o a otra página según sea necesario
     this.router.navigate(['/auth/login']);
     this.dialogRef.close();
