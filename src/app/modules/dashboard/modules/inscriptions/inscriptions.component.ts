@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Inscription } from './models/inscription.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../../core/services/auth.service';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import { filter, firstValueFrom, map, Observable } from 'rxjs';
 import { User } from '../../../../core/models';
 import { Store } from '@ngrx/store';
 import {
@@ -13,6 +13,7 @@ import {
 import { InscriptionsActions } from './store/inscriptions.actions';
 import { InscriptionsFormComponent } from './components/inscriptions-form/inscriptions-form.component';
 import { InscriptionsDeleteComponent } from './components/inscriptions-delete/inscriptions-delete.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-inscriptions',
@@ -31,12 +32,19 @@ export class InscriptionsComponent implements OnInit {
 
 
   // this.loadInscriptions(); // Carga los inscripciones usando un observable
-  constructor(private authService: AuthService, private store: Store) {
+  constructor(private authService: AuthService, private store: Store, private router: Router) {
     this.authUser$ = this.authService.authUser$;
-    // this.loadInscriptions(); // Carga los inscripciones usando un observable
     this.inscriptions$ = this.store.select(selectInscriptions);
     this.isLoading$ = this.store.select(selectInscriptionsLoading);
     this.error$ = this.store.select(selectInscriptionsError);
+    // this.router.events.pipe(
+    //   filter(event => event instanceof NavigationEnd)
+    // ).subscribe(event => {
+    //   // Si la URL contiene 'inscriptions', recarga
+    //   if (this.router.url.includes('/dashboard/inscriptions')) {
+    //     this.onLoadInscriptions();
+    //   }
+    // });
   }
 
   ngOnInit(): void {
@@ -59,10 +67,10 @@ export class InscriptionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if(result.id) {
+        if (result.id) {
           // Si el resultado tiene un id, significa que es una actualización
           this.store.dispatch(InscriptionsActions.updateInscription({ inscription: result }));
-        }else {
+        } else {
           // Si no tiene id, es una nueva inscripción
           this.store.dispatch(InscriptionsActions.createInscription({ inscription: result }));
         }

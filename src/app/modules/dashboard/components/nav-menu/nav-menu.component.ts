@@ -52,7 +52,7 @@ export class NavMenuComponent {
   ];
 
   authUser$: Observable<User | null>;
-  
+
   constructor(private router: Router, private authService: AuthService) {
     this.authUser$ = this.authService.authUser$;
   }
@@ -63,4 +63,7 @@ export class NavMenuComponent {
     this.router.navigate(['/auth/login']);
   }
 
+  trackItem(index: number, item: Section): string {
+    return item.link;
+  }
 }

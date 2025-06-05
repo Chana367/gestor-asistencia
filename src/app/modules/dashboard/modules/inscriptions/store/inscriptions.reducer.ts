@@ -23,9 +23,9 @@ const inscriptionsReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(InscriptionsActions.loadInscriptionsSuccess, (state, action) => ({
+on(InscriptionsActions.loadInscriptionsSuccess, (state, { inscriptions }) => ({
     ...state,
-    inscriptions: action.inscriptions,
+    inscriptions,
     loading: false,
     error: null,
   })),

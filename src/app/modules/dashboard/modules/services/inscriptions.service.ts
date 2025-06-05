@@ -17,25 +17,10 @@ export class InscriptionsService {
 
   private apiUrl = 'http://localhost:3000/inscriptions';
 
-  constructor(private http: HttpClient, private courseService: CoursesService, private studentsService: StudentsService) {
-    // Cargar inscripciones iniciales desde la API
-    this.http.get<Inscription[]>(this.apiUrl).subscribe({
-      next: (response) => {
-        if (response && response.length > 0) {
-          this.inscriptions = response;
-          this.inscriptionsSubject.next(this.inscriptions);
-        } else {
-          console.warn('No se encontraron inscripciones');
-        }
-      },
-      error: (err) => {
-        console.error('Error al obtener inscripciones:', err);
-      }
-    });
-  }
+  constructor(private http: HttpClient, private courseService: CoursesService, private studentsService: StudentsService) {}
 
   getInscriptions$(): Observable<Inscription[]> {
-    return this.inscriptions$;
+    return this.http.get<Inscription[]>(this.apiUrl);
   }
 
   getInscriptionById(id: string | null): Observable<Inscription | null> {

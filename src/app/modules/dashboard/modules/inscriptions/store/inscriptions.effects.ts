@@ -12,23 +12,19 @@ export class InscriptionsEffects {
   deleteInscription$;
 
   constructor(private actions$: Actions, private inscriptionsService: InscriptionsService) {
-    this.loadInscriptions$ = createEffect(() => {
-      return this.actions$.pipe(
-        // Interceptar la acción de cargar inscripciones
+    this.loadInscriptions$ = createEffect(() =>
+      this.actions$.pipe(
         ofType(InscriptionsActions.loadInscriptions),
-        // Después de interceptar la acción, ejecutar el servicio para obtener las inscripciones
         concatMap(() =>
           this.inscriptionsService.getInscriptions$().pipe(
-            // Mapear la respuesta del servicio a la acción de éxito
             map((inscriptions) => InscriptionsActions.loadInscriptionsSuccess({ inscriptions })),
-            // Manejar errores y mapearlos a la acción de fallo
             catchError((error) =>
               of(InscriptionsActions.loadInscriptionsFailure({ error: error.message }))
             )
           )
         )
-      );
-    });
+      )
+    );
 
     this.createInscription$ = createEffect(() =>
       this.actions$.pipe(
