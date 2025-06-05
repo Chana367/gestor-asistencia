@@ -7,6 +7,10 @@ import { InscriptionsDeleteComponent } from './components/inscriptions-delete/in
 import { InscriptionsFormComponent } from './components/inscriptions-form/inscriptions-form.component';
 import { SharedModule } from '../../../../shared/shared.module';
 import { InscriptionsComponent } from './inscriptions.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { InscriptionsEffects } from './store/inscriptions.effects';
+import { inscriptionsFeature } from './store/inscriptions.reducer';
 
 
 @NgModule({
@@ -19,6 +23,8 @@ import { InscriptionsComponent } from './inscriptions.component';
   imports: [
     CommonModule,
     InscriptionsRoutingModule,
+    StoreModule.forFeature(inscriptionsFeature),
+    EffectsModule.forFeature([InscriptionsEffects]),
     SharedModule
   ]
 })

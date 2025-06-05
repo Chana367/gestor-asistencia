@@ -89,45 +89,25 @@ export class InscriptionsService {
       }
     });
   }
-  postInscription(newInscription: Inscription, id?: number): void {
-    if (newInscription) {
-      if (!id) {
-        // POST: Crear nueva inscripción
-        this.http.post<Inscription>(this.apiUrl, newInscription).subscribe({
-          next: (createdInscription) => {
-            this.inscriptions = [...this.inscriptions, createdInscription];
-            this.inscriptionsSubject.next(this.inscriptions);
-          },
-          error: (err) => {
-            console.error('Error al agregar inscripción:', err);
-          }
-        });
-      } else {
-        // PUT: Actualizar inscripción existente
-        this.http.put<Inscription>(`${this.apiUrl}/${id}`, newInscription).subscribe({
-          next: (updatedInscription) => {
-            this.inscriptions = this.inscriptions.map((inscription) =>
-              inscription.id === id ? updatedInscription : inscription
-            );
-            this.inscriptionsSubject.next(this.inscriptions);
-          },
-          error: (err) => {
-            console.error('Error al actualizar inscripción:', err);
-          }
-        });
-      }
-    }
+
+  postInscription(newInscription: Inscription): Observable<Inscription> {
+    // POST: Crear nueva inscripción
+    return this.http.post<Inscription>(this.apiUrl, newInscription);
   }
 
-  deleteInscription(id: number): void {
-    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
-      next: () => {
+  updateInscription(updatedInscription: Inscription): Observable<Inscription> {
+    // PUT: Actualizar inscripción existente
+    const id = updatedInscription.id;
+    return this.http.put<Inscription>(`${this.apiUrl}/${id}`, updatedInscription);
+  }
+
+  deleteInscription(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      map(() => {
         this.inscriptions = this.inscriptions.filter((inscription) => inscription.id !== id);
         this.inscriptionsSubject.next(this.inscriptions);
-      },
-      error: (err) => {
-        console.error('Error al eliminar inscripción:', err);
-      }
-    });
+        return { success: true };
+      })
+    );
   }
 }

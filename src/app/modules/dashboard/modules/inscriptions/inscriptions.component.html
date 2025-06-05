@@ -5,14 +5,14 @@
   </div>
 </div>
 
-<ng-container *ngIf="isLoading; else notLoading">
+<ng-container *ngIf="isLoading$ | async; else notLoading">
   <p>Cargando, por favor espere...</p>
 </ng-container>
 
 <ng-template #notLoading>
   <app-inscriptions-table 
-    [dataSource]="inscriptions" 
-    (editInscription)="onSaveInscription($event)" 
+    [dataSource]="(inscriptions$ | async) || []"
+    (editInscription)="onSaveInscription($event)"
     (deleteInscription)="onDeleteInscription($event)">
   </app-inscriptions-table>
 </ng-template>

@@ -1,12 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Inscription } from './models/inscription.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { InscriptionsDeleteComponent } from './components/inscriptions-delete/inscriptions-delete.component';
-import { InscriptionsFormComponent } from './components/inscriptions-form/inscriptions-form.component';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import { User } from '../../../../core/models';
-import { InscriptionsService } from '../services/inscriptions.service';
+import { Store } from '@ngrx/store';
+import {
+  selectInscriptions,
+  selectInscriptionsError,
+  selectInscriptionsLoading,
+} from './store/inscriptions.selectors';
+import { InscriptionsActions } from './store/inscriptions.actions';
+import { InscriptionsFormComponent } from './components/inscriptions-form/inscriptions-form.component';
+import { InscriptionsDeleteComponent } from './components/inscriptions-delete/inscriptions-delete.component';
 
 @Component({
   selector: 'app-inscriptions',
@@ -14,45 +20,58 @@ import { InscriptionsService } from '../services/inscriptions.service';
   templateUrl: './inscriptions.component.html',
   styles: ``
 })
-export class InscriptionsComponent {
-  inscriptions: Inscription[] = [];
-  isLoading: boolean = true; // Variable para controlar el estado de carga
+export class InscriptionsComponent implements OnInit {
+
+  inscriptions$: Observable<Inscription[] | null>;
+  isLoading$: Observable<boolean>;
+  error$: Observable<string | null>;
+
   readonly dialog = inject(MatDialog);
   authUser$: Observable<User | null>;
 
-  constructor(private inscriptionService: InscriptionsService, private authService: AuthService) {
+
+  // this.loadInscriptions(); // Carga los inscripciones usando un observable
+  constructor(private authService: AuthService, private store: Store) {
     this.authUser$ = this.authService.authUser$;
-    this.loadInscriptions(); // Carga los inscripciones usando un observable
+    // this.loadInscriptions(); // Carga los inscripciones usando un observable
+    this.inscriptions$ = this.store.select(selectInscriptions);
+    this.isLoading$ = this.store.select(selectInscriptionsLoading);
+    this.error$ = this.store.select(selectInscriptionsError);
   }
 
-  loadInscriptions() {
-    this.inscriptionService.getInscriptions$().subscribe({
-      next: (inscriptions) => {
-        this.inscriptions = inscriptions;
-        this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los inscripciones
-        console.log('Incripciones cargados:', this.inscriptions);
-      },
-      error: (error: any) =>{
-        console.error('Error al cargar los inscripciones:', error),
-        this.isLoading = false; // Cambia el estado de carga a falso una vez que se cargan los inscripciones
-      }
-    });
+  ngOnInit(): void {
+    this.onLoadInscriptions(); // Carga las inscripciones al iniciar el componente
   }
 
-  onSaveInscription(id?: number): void {
-    const inscription = id ? this.inscriptions.find(inscription => inscription.id === id) : null; // Busca el inscripcion por ID si se proporciona uno
+  async onSaveInscription(id?: number): Promise<void> {
+    let inscription: Inscription | null = null;
+    if (id) {
+      const inscriptions = await firstValueFrom(this.inscriptions$);
+      inscription = inscriptions?.find(insc => insc.id === id) ?? null;
+    }
     const dialogRef = this.dialog.open(InscriptionsFormComponent, {
       width: '60vw',
       height: 'auto',
       panelClass: 'custom-dialog-container',
-      disableClose: true, // Deshabilita el cierre al hacer clic fuera del dialog
-      data: { inscription: inscription } // Pasa los datos del inscripcion al formulario
+      disableClose: true,
+      data: { inscription }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.inscriptionService.postInscription(result, id); // Guarda el nuevo inscripcion o los cambios realizados
-      this.loadInscriptions(); // Recarga la lista de inscripciones
+      if (result) {
+        if(result.id) {
+          // Si el resultado tiene un id, significa que es una actualización
+          this.store.dispatch(InscriptionsActions.updateInscription({ inscription: result }));
+        }else {
+          // Si no tiene id, es una nueva inscripción
+          this.store.dispatch(InscriptionsActions.createInscription({ inscription: result }));
+        }
+      }
     });
+  }
+
+  onLoadInscriptions() {
+    this.store.dispatch(InscriptionsActions.loadInscriptions());
   }
 
   onDeleteInscription(id: number) {
@@ -65,8 +84,7 @@ export class InscriptionsComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.inscriptionService.deleteInscription(id); // Elimina el inscripcion si se confirma
-        this.loadInscriptions(); // Recarga la lista de inscripciones
+        this.store.dispatch(InscriptionsActions.deleteInscription({ id }));
       }
     });
   }
